@@ -1,2 +1,11 @@
+* text eol=lf
+*.ipynb linguist-detectable=false
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+
+# Windows launchers need CRLF
 *.bat text eol=crlf
-*.sh text eol=lf
