@@ -13,7 +13,7 @@ readme = "README.md"
 requires-python = ">=3.8"
 dependencies = [
     "torch>=2.0.1",
-    "transformers>=4.38.2",
+    "transformers>=4.38.2,<4.48",  # newer releases break the Janus model code
     "timm>=0.9.16",
     "accelerate",
     "sentencepiece",
@@ -25,6 +25,7 @@ dependencies = [
 gradio = [
     "gradio==3.48.0",
     "gradio-client==0.6.1",
+    "fastapi<0.113",  # gradio 3.48 breaks with newer fastapi/starlette
     "mdtex2html==1.3.0",
     "pypinyin==0.50.0",
     "tiktoken==0.5.2",

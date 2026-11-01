@@ -12,13 +12,15 @@ import time
 
 
 # Load model and processor
-model_path = "deepseek-ai/Janus-Pro-7B"
+# Override with the JANUS_MODEL env var, e.g. JANUS_MODEL=deepseek-ai/Janus-Pro-7B
+model_path = os.environ.get("JANUS_MODEL", "deepseek-ai/Janus-Pro-1B")
 config = AutoConfig.from_pretrained(model_path)
 language_config = config.language_config
 language_config._attn_implementation = 'eager'
 vl_gpt = AutoModelForCausalLM.from_pretrained(model_path,
                                              language_config=language_config,
-                                             trust_remote_code=True)
+                                             trust_remote_code=True,
+                                             torch_dtype=torch.bfloat16 if torch.cuda.is_available() else torch.float16)
 if torch.cuda.is_available():
     vl_gpt = vl_gpt.to(torch.bfloat16).cuda()
 else:
@@ -241,5 +243,11 @@ with gr.Blocks() as demo:
         outputs=image_output
     )
 
-demo.launch(share=True)
+# Local by default; set JANUS_SHARE=1 for a public gradio.live link.
+demo.launch(
+    server_name=os.environ.get("JANUS_HOST", "127.0.0.1"),
+    server_port=int(os.environ.get("JANUS_PORT", "7860")),
+    share=os.environ.get("JANUS_SHARE", "0") == "1",
+    inbrowser=os.environ.get("JANUS_NO_BROWSER", "0") != "1",
+)
 # demo.queue(concurrency_count=1, max_size=10).launch(server_name="0.0.0.0", server_port=37906, root_path="/path")

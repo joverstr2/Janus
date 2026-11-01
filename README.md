@@ -2,6 +2,19 @@
 <!-- markdownlint-disable html -->
 <!-- markdownlint-disable no-duplicate-header -->
 
+## Quick start on Windows (RTX 3060 12GB)
+
+1. Install [Python 3.10](https://www.python.org/downloads/release/python-31011/) (tick "Add to PATH") and [Git](https://git-scm.com/download/win), plus a recent NVIDIA driver.
+2. Clone this repo: `git clone https://github.com/joverstr2/Janus.git`
+3. Double-click `create_desktop_shortcut.bat` in the repo folder.
+4. Use the new **Janus-Pro** icon on your desktop. The browser opens at http://127.0.0.1:7860 once the model is loaded.
+
+The first launch creates `.venv`, installs CUDA PyTorch and the demo dependencies, and downloads about 4 GB of `Janus-Pro-1B` weights, so it takes a while. Later launches start much faster.
+
+To try another model, set `JANUS_MODEL` before launching, e.g. `setx JANUS_MODEL deepseek-ai/Janus-Pro-7B` (open a new window afterwards). The 7B model (~15 GB in bf16) will **not** fit in 12 GB of VRAM at the default precision, so stay on 1B for a 3060. Other options: `JANUS_PORT` (default 7860), `JANUS_SHARE=1` for a public gradio link, and `JANUS_NO_BROWSER=1`.
+
+On Linux run `./launch_janus.sh` instead.
+
 <div align="center">
   <img src="images/logo.svg" width="60%" alt="DeepSeek LLM" />
 </div>
